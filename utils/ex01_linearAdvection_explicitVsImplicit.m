@@ -46,7 +46,7 @@ in.endtime = 1; % ......................................... End time
 in.bctype  = {"periodic"}; % .............................. Type of BCs
 in.ic      = @(x) sin(2*pi*x); % .......................... Initial condition
 in.showic  = 0; % ......................................... Plot IC and pause
-in.showsol = 1; % ......................................... Plot solution on the fly
+in.showsol = 0; % ......................................... Plot solution on the fly
 
 implicit = "BackwardEuler"; % ........... 
 % implicit = "ESDIRK2"; % ............... Type of implicit scheme
@@ -62,16 +62,16 @@ InitSolver(in);
 % ------------------------------------------------------------------------------
 % EXPLICIT
 % ------------------------------------------------------------------------------
-% tic
-% % Initialize solution
-% [coeffs, el, fa] = InitRun(el, fa, in);
-% % Solve
-% [coeffs, el, fa] = Solve(coeffs, el, fa, in);
-% % Plot
-% hold off;
-% PlotSolution(el, fa, coeffs,'-b');
+tic
+% Initialize solution
+[coeffs, el, fa] = InitRun(el, fa, in);
+% Solve
+[coeffs, el, fa] = Solve(coeffs, el, fa, in);
+% Plot
+hold off;
+PlotSolution(el, fa, coeffs,'-b');
 
-% pause(0.1);
+pause(0.1);
 
 % ------------------------------------------------------------------------------
 % IMPLICIT
