@@ -77,11 +77,19 @@ function [L, M, D, F] = AssembleLinearOperator(el, fa, model)
   % Ovel all faces
   for f = 1:Nf
 
+    % Pick upwind data
+    if model.a < 0
+      E = fa(f).elnr1; % ......... Left element for a > 0
+      phiupw = fa(f).phi1; % ..... Upwinded basis function
+    else 
+      E = fa(f).elnr2; % ......... Right element for a < 0
+      phiupw = fa(f).phi2; % ..... Upwinded basis function
+    end 
+    
     % Indices corresponding to the upwind flux
-    E = fa(f).elnr1;
-    J = el(e).offset : el(e).offset + el(e).ndof-1;
+    J = el(E).offset : el(E).offset + el(E).ndof-1;
 
-    % Flux on the left (i.e. right interface of elnr2, hence the plus)
+    % Flux on the left (i.e. right interface of elnr1, hence the plus)
     % ----------------
     e = fa(f).elnr1;
     % Indices corresponding to element e in the global matrix 
@@ -89,8 +97,8 @@ function [L, M, D, F] = AssembleLinearOperator(el, fa, model)
     % Left part of the ocal flux matrix
     for i = 1:el(e).ndof  %...... Over local DoFs  
       for j = 1:el(e).ndof % .... Over local DoFs 
-        F(I(i),J(j)) = F(I(i),J(j)) + fa(f).phi1(i) * fa(f).phi1(j);
-        % FL(I(i),J(j)) = fa(f).phi1(i) * fa(f).phi1(j);
+        F(I(i),J(j)) = F(I(i),J(j)) + fa(f).phi1(i) * phiupw(j);
+      % FL(I(i),J(j)) = fa(f).phi1(i) * phiupw(j);
       end
     end
 
@@ -102,8 +110,8 @@ function [L, M, D, F] = AssembleLinearOperator(el, fa, model)
     % Left part of the ocal flux matrix
     for i = 1:el(e).ndof  %...... Over local DoFs  
       for j = 1:el(e).ndof % .... Over local DoFs 
-        F(I(i),J(j)) = F(I(i),J(j)) - fa(f).phi2(i) * fa(f).phi1(j);
-        % FR(I(i),J(j)) = - fa(f).phi2(i) * fa(f).phi1(j);
+        F(I(i),J(j)) = F(I(i),J(j)) - fa(f).phi2(i) * phiupw(j);
+      % FR(I(i),J(j)) = - fa(f).phi2(i) * phiupw(j);
       end
     end
 
