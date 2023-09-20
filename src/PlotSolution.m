@@ -18,13 +18,15 @@
 %          coeffs ... Global coefficient vector                                %
 %                                                                              %
 % ---------------------------------------------------------------------------- %
-function PlotSolution(el, fa, coeffs);
-
-	hold off;
+function PlotSolution(el, fa, coeffs, linecolor);
 
 	Ne = size(el,2);
 
   for e = 1:Ne
+
+  	if nargin == 3
+  		linecolor = '-r';
+  	end
 
 	% Plot elements
 	  % plot(el(e).nodes,[0,0],'-k')
@@ -37,7 +39,7 @@ function PlotSolution(el, fa, coeffs);
 	  % plot(x,sol,'-k','LineWidth',2);
 
 	 % Plot solution on quadrature points of the element
-	  % plot(el(e).qp,el(e).sol,'-r','LineWidth',2)
+	  % plot(el(e).qp,el(e).sol,linecolor,'LineWidth',2)
 
 	 % Plot solution on quadrature points and the end points of the element
 	  if e == Ne % ................................................... Periodicity
@@ -48,7 +50,7 @@ function PlotSolution(el, fa, coeffs);
 	  	f = [ fa( el(e).faces(1) ).sol2, el(e).sol', fa( el(e).faces(2) ).sol1 ];
 	  end
 
-	  plot(x,f,'-r','LineWidth',2)
+	  plot(x,f,linecolor,'LineWidth',2)
 	  hold on;
 
 	end

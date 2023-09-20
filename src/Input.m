@@ -53,6 +53,9 @@ classdef Input
     showic % ..................... Plot initial condition and wait for input
     showsol % .................... Plot solution in every timestep
 
+    % Test
+    test % ....................... Flag for testing
+
   end
    
   methods

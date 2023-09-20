@@ -49,6 +49,7 @@ function [sol, el, fa] = InitRun(el, fa, input)
   % Plot initial condition
   if input.showic == 1
 
+    hold off;
     PlotSolution(el, fa, sol);
     fprintf("  Paused after plotting the initial condition.\n");
     fprintf("  Waiting for input ...\n");

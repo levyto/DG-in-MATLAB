@@ -14,7 +14,7 @@
 % Description: Scalar Inviscid Burgers' Equation                               %
 %                                                                              %
 %              Solve                            u_t + (f(u))_x = 0             %
-%              with flux                                     f(u) = 0.5*u^2    %
+%              with flux                                  f(u) = 0.5*u^2       %
 %              initial condition                        u(x,0) = u_0(x)        %
 %              and periodic boundary conditions         u(0,t) = u(1,t)        %
 %                                                                              %
@@ -32,7 +32,7 @@ in.Ne      = 100;
 in.order   = 1;
 in.intrule = "GL";
 in.timeint = "SSPRK3";
-in.CFL     = 0.9;
+in.CFL     = 0.8;
 in.endtime = 1;
 in.bctype  = {"periodic"};
 in.ic      = @(x) exp( -(10*(x-1/4)).^2 );

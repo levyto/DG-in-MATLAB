@@ -80,6 +80,7 @@ function [sol, el, fa] = Solve(sol, el, fa, input)
     % Plot solution during the run
     if input.showsol == 1
 
+      hold off;
       PlotSolution(el, fa, sol);
       pause(1e-6);
 

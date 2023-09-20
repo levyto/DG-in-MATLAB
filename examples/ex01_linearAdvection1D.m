@@ -32,7 +32,7 @@ in.Ne      = 16; % ........................................ Number of elements
 in.order   = 1; % ......................................... Polynomial order
 in.intrule = "GL"; % ...................................... Quadrature rule
 in.timeint = "ForwardEuler"; % ............................ Time integration
-in.CFL     = 1; % ......................................... CFL number
+in.CFL     = 0.8; % ....................................... CFL number
 in.endtime = 1; % ......................................... End time
 in.bctype  = {"periodic"}; % .............................. Type of BCs
 in.ic      = @(x) sin(pi*x); % ............................ Initial condition
@@ -123,6 +123,6 @@ InitSolver(in);
 [coeffs, el, fa] = Solve(coeffs, el, fa, in);
 
 % Plot
-PlotSolution(el, fa, coeffs);
+PlotSolution(el, fa, coeffs,'-b');
 
 
