@@ -25,7 +25,7 @@ clear all; clc;
 addpath('../src');
 addpath('../models');
 
-% Assign how many mesh refinements have to be done (> 2 to measure the order)
+% Assign how many mesh refinements have to be done (> 1 to measure the order)
 N_ELEMS = 2;
 % Assign the highest polynomial approximation to be tested 
 % The output will be results for p = O, 1, ..., N_ORDER
@@ -75,6 +75,7 @@ function err = L2NormError(el, fa, el0, fa0)
 
 end
 
+
 % Get the error for each Ne and p
 L2Err = zeros(N_ORDER, N_ELEMS);
 h     = zeros(1,N_ELEMS);
@@ -104,7 +105,7 @@ for j = 1:N_ORDER+1
   in.Ne  = Ne0;
 % Increase order
   in.order = in.order+1;
-% Change time-integration method
+% Change time-integration method to be in.order + 1
   in.timeint(end) = num2str(j+1);
 
 end 

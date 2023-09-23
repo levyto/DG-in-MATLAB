@@ -15,7 +15,7 @@
 %               [-1,1] and given polynomial space on every element             %
 %                                                                              %
 % ---------------------------------------------------------------------------- %
-function plotL2Projection()
+function PlotL2Projection()
 
   addpath('../src');
 

@@ -77,41 +77,45 @@ function [L, M, D, F] = AssembleLinearOperator(el, fa, model)
   % Ovel all faces
   for f = 1:Nf
 
+    %        elnr1       elnr2
+    %    O-----------O-----------O
+    %   f-1          f          f+1
+
     % Pick upwind data
     if model.a < 0
       E = fa(f).elnr1; % ......... Left element for a > 0
-      phiupw = fa(f).phi1; % ..... Upwinded basis function
+      phiupw = fa(f).phi1; % ..... Upwind basis function
     else 
       E = fa(f).elnr2; % ......... Right element for a < 0
-      phiupw = fa(f).phi2; % ..... Upwinded basis function
+      phiupw = fa(f).phi2; % ..... Upwind basis function
     end 
     
     % Indices corresponding to the upwind flux
     J = el(E).offset : el(E).offset + el(E).ndof-1;
 
-    % Flux on the left (i.e. right interface of elnr1, hence the plus)
-    % ----------------
+    % Flux on the left of face f (i.e. right interface of elnr1, hence the plus)
+    % --------------------------       =====
     e = fa(f).elnr1;
-    % Indices corresponding to element e in the global matrix 
-    I = el(e).offset : el(e).offset + el(e).ndof-1; % ... (same as J in fact)
-    % Left part of the ocal flux matrix
+    % Indices corresponding to element elnr1 in the global matrix 
+    I = el(e).offset : el(e).offset + el(e).ndof-1; % ... (same as J for a > 0)
+    % Right part of the ocal flux matrix
     for i = 1:el(e).ndof  %...... Over local DoFs  
       for j = 1:el(e).ndof % .... Over local DoFs 
         F(I(i),J(j)) = F(I(i),J(j)) + fa(f).phi1(i) * phiupw(j);
-      % FL(I(i),J(j)) = fa(f).phi1(i) * phiupw(j);
+      % FR(I(i),J(j)) = fa(f).phi1(i) * phiupw(j);
       end
     end
 
-    % Flux on the right (i.e. left interface of elnr2, hence the minus)
-    % -----------------
+    % Flux on the right of face f (i.e. left interface of elnr2, hence the minus)
+    % ---------------------------       ====
     e = fa(f).elnr2;
-    % Indices corresponding to element e in the global matrix
-    I = el(e).offset : el(e).offset + el(e).ndof-1;
-    % Left part of the ocal flux matrix
+    % Indices corresponding to element elnr2 in the global matrix
+    I = el(e).offset : el(e).offset + el(e).ndof-1; % ... (same as J for a < 0)
+    % Left part of the local flux matrix
     for i = 1:el(e).ndof  %...... Over local DoFs  
       for j = 1:el(e).ndof % .... Over local DoFs 
         F(I(i),J(j)) = F(I(i),J(j)) - fa(f).phi2(i) * phiupw(j);
-      % FR(I(i),J(j)) = - fa(f).phi2(i) * phiupw(j);
+      % FL(I(i),J(j)) = - fa(f).phi2(i) * phiupw(j);
       end
     end
 
